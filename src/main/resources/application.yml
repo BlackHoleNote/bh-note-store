@@ -1,0 +1,77 @@
+spring:
+  profiles:
+    include: security
+    group:
+      "local": "common, localdb"
+      "prod": "common, proddb"
+    active: local
+---
+spring:
+  config:
+    activate:
+      on-profile: common
+  datasource:
+    username: ${MYSQLDB_USER}
+    password: ${MYSQLDB_ROOT_PASSWORD}
+
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: DEBUG
+        type:
+          descriptor:
+            sql:
+              BasicBinder: TRACE
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  show-actuator: true
+  show-oauth2-endpoints: true
+  swagger-ui:
+    tryItOutEnabled: true
+  paths-to-exclude:
+    - /api/admin/**
+management:
+  endpoints:
+    web:
+      exposure:
+        include: prometheus
+    health:
+      show-details: always
+---
+spring:
+  config:
+    activate:
+        on-profile: localdb
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:test;MODE=LEGACY;NON_KEYWORDS=USER
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: create        # DB 초기화 전략 (none, create, create-drop, update, validate)
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+        format_sql: true      # 쿼리 로그 포맷 (정렬)
+        show_sql: true        # 쿼리 로그 출력
+---
+spring:
+  config:
+    activate:
+      on-profile: proddb
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://mysqldb:3306/blackholemain?serverTimezone=UTC&characterEncoding=UTF-8
+  jpa:
+    hibernate:
+      format_sql: true
+      ddl-auto: none
+    database: mysql
+    database-platform=org:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+    open-in-view: false
+    show-sql: true
