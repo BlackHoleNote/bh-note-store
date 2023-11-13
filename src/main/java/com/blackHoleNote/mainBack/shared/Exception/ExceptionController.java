@@ -12,7 +12,12 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ControllerAdvice
 public class ExceptionController {
 
-    @ResponseStatus(HttpStatus.OK)
+    @ExceptionHandler(ConflictException.class)
+    public ResponseEntity<ErrorResponse> exeptionHandler(ConflictException exception) {
+        log.debug(exception.toString());
+        return new ResponseEntity<>(new ErrorResponse(HttpStatus.CONFLICT.value(), exception.toString()), HttpStatus.CONFLICT);
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> exeptionHandler(Exception exception) {
         log.debug(exception.toString());

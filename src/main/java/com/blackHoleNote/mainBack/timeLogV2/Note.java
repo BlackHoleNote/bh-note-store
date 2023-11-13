@@ -21,6 +21,15 @@ public class Note {
     String title;
     @Column(columnDefinition = "LONGTEXT")
     String contents;
+    long version;
+
+    public Note(long id, long userId, String title, String contents, long version) {
+        this.id = id;
+        this.userId = userId;
+        this.title = title;
+        this.contents = contents;
+        this.version = version;
+    }
 
     public Note(long id, long userId, String title, String contents) {
         this.id = id;

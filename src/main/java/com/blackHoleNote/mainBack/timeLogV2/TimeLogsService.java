@@ -1,10 +1,11 @@
 package com.blackHoleNote.mainBack.timeLogV2;
 
 import com.blackHoleNote.mainBack.authV2.SimpleUserDto;
+import com.blackHoleNote.mainBack.shared.Exception.ConflictException;
+import com.blackHoleNote.mainBack.shared.Exception.NotFoundException;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Optional;
 
 @Component
 public class TimeLogsService {
@@ -14,7 +15,7 @@ public class TimeLogsService {
         this.timeLogsJPARepository = timeLogsJPARepository;
     }
 
-    public CreatedNoteDTO save(CreateNoteDTO noteDto, SimpleUserDto userDto) {
+    public CreatedNoteDTO create(CreateNoteDTO noteDto, SimpleUserDto userDto) {
         Note note;
 
         if (noteDto.id() != null) {
@@ -25,9 +26,14 @@ public class TimeLogsService {
         return new CreatedNoteDTO(note.getId(), noteDto.id());
     }
 
-    public CreatedNoteDTO save(SaveNoteDTO noteDTO, SimpleUserDto userDto) {
-        Note note = timeLogsJPARepository.save(new Note(noteDTO.id(), userDto.getId(), noteDTO.title(), noteDTO.contents()));
-        return new CreatedNoteDTO(note.getId(), null);
+    public SavedNoteDTO save(SaveNoteDTO noteDTO, SimpleUserDto userDto) {
+        Note headNote = timeLogsJPARepository.findByIdAndUserId(noteDTO.id(), userDto.getId()).orElseThrow(NotFoundException::new);
+        if (noteDTO.version() < headNote.getVersion()) {
+            throw new ConflictException("version must be sync");
+        }
+        long newVersion = noteDTO.version() + 1l;
+        Note note = timeLogsJPARepository.save(new Note(noteDTO.id(), userDto.getId(), noteDTO.title(), noteDTO.contents(), newVersion));
+        return new SavedNoteDTO(note.getId(), newVersion);
     }
     public List<Note> loadAll() {
         return timeLogsJPARepository.findAll();
@@ -36,7 +42,7 @@ public class TimeLogsService {
     public List<Note> loadAllNotesOfUser(SimpleUserDto userDto) {
         return timeLogsJPARepository.findAllByUserId(userDto.getId());
     }
-    public Optional<Note> load(Long noteId) {
-        return timeLogsJPARepository.findById(noteId);
+    public Note load(Long noteId, SimpleUserDto userDto) {
+        return timeLogsJPARepository.findByIdAndUserId(noteId, userDto.getId()).orElseThrow(NotFoundException::new);
     }
 }

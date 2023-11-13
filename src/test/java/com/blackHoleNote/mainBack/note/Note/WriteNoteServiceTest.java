@@ -1,23 +1,14 @@
 package com.blackHoleNote.mainBack.note.Note;
 
-import com.blackHoleNote.mainBack.note.domain.*;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.mockito.ArgumentMatchers.any;
-
-@ExtendWith(MockitoExtension.class)
-public class WriteNoteServiceTest {
+//@ExtendWith(MockitoExtension.class)
+//public class WriteNoteServiceTest {
 //    @InjectMocks
-    UpdateNoteService updateNoteService;
-
-    @Test
-    @DisplayName("글 작성 커맨드를 날리면 저장에 성공한 이벤트까지의 커서를 돌려준다. 추가로 커서 전까지 노트 생성에 대한 결과가 있다면 tempId에 매칭되는 noteId도 포함되어있어야한다.")
-    void test1() {
+//    UpdateNoteService updateNoteService;
+//
+//    @Test
+//    @DisplayName("글 작성 커맨드를 날리면 저장에 성공한 이벤트까지의 커서를 돌려준다. 추가로 커서 전까지 노트 생성에 대한 결과가 있다면 tempId에 매칭되는 noteId도 포함되어있어야한다.")
+//    void test1() {
 //        doAnswer((invocation -> {
 //            Object arg = invocation.getArgument(0);
 //            NoteAction action = (NoteAction) arg;
@@ -30,8 +21,8 @@ public class WriteNoteServiceTest {
 //
 //        assertEquals(result.cursor(), 0);
 //        assertEquals(result.idMap(), new HashMap<Long, Long>(){{put(0L, 0L);}});
-    }
-}
+//    }
+//}
 //    @Test
 //    fun `글 작성을 했을때 반환한 id로 저장한 값에 대한 조회가 가능함`() {
 //        val writeNoteId = writeNoteService.write("test")

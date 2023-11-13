@@ -4,9 +4,6 @@ import com.blackHoleNote.mainBack.authV2.SimpleUserDto;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.messaging.handler.annotation.DestinationVariable;
-import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,16 +15,15 @@ public class TimeLogsV2Controller {
     private final TimeLogsService timeLogsService;
 
     @PostMapping("/v2/note/save")
-    public CreatedNoteDTO save(@RequestBody String body, @AuthenticationPrincipal SimpleUserDto userDto) {
+    public SavedNoteDTO save(@RequestBody String body, @AuthenticationPrincipal SimpleUserDto userDto) {
         if (body == null) {
             throw new RuntimeException("body is null");
         }
-
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             SaveNoteDTO noteDto = objectMapper.readValue(body, SaveNoteDTO.class);
-            CreatedNoteDTO createdNote = timeLogsService.save(noteDto, userDto);
-            return createdNote;
+            SavedNoteDTO savedNote = timeLogsService.save(noteDto, userDto);
+            return savedNote;
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
@@ -40,11 +36,10 @@ public class TimeLogsV2Controller {
             System.out.printf("body is null");
             throw new RuntimeException("body is null");
         }
-
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             CreateNoteDTO noteDto = objectMapper.readValue(body, CreateNoteDTO.class);
-            CreatedNoteDTO createdNote = timeLogsService.save(noteDto, userDto);
+            CreatedNoteDTO createdNote = timeLogsService.create(noteDto, userDto);
             System.out.printf("%s will be %s", noteDto, createdNote);
             return createdNote;
         } catch (JsonProcessingException e) {
@@ -55,12 +50,12 @@ public class TimeLogsV2Controller {
         throw new RuntimeException("body is null");
     }
 
-    @GetMapping("/v2/note/{noteId}")
-    public String get(@PathVariable Long noteId) {
+    @GetMapping("/v2/notes/{noteId}")
+    public Note get(@AuthenticationPrincipal SimpleUserDto userDto, @PathVariable Long noteId) {
         System.out.printf("note: %s Enter", noteId);
         System.out.printf("test ============= =============\n");
 
-        return "hello world";
+        return timeLogsService.load(noteId, userDto);
     }
 
     @GetMapping("/v2/notes")

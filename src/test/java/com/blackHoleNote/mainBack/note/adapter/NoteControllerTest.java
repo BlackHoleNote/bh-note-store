@@ -1,6 +1,5 @@
 package com.blackHoleNote.mainBack.note.adapter;
 
-import com.blackHoleNote.mainBack.note.domain.actions.CreateNoteActionDTO;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

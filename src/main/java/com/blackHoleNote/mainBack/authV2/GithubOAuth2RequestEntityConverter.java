@@ -18,7 +18,6 @@ import java.net.URI;
 
 public class GithubOAuth2RequestEntityConverter extends OAuth2AuthorizationCodeGrantRequestEntityConverter {
 
-
     @Override
     public RequestEntity<?> convert(OAuth2AuthorizationCodeGrantRequest authorizationGrantRequest) {
         RequestEntity<MultiValueMap<String, String>> entity = (RequestEntity<MultiValueMap<String, String>>) super.convert(authorizationGrantRequest);
