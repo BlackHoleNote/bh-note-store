@@ -56,5 +56,5 @@ jobs:
           file: ./Dockerfile
           platforms: linux/x86_64
           push: true
-          tags: ${{ matrix.tag }}
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/bh-note-store:latest
           labels: ${{ steps.docker_meta.outputs.labels }}
