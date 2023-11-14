@@ -35,7 +35,7 @@ jobs:
         id: docker_meta
         uses: crazy-max/ghaction-docker-meta@v1
         with:
-          images: starpro123/bh-note-store
+          images: ${{ secrets.DOCKERHUB_USERNAME }}/bh-note-store
           tag-semver: |
             {{version}}
             {{major}}.{{minor}}
@@ -54,7 +54,7 @@ jobs:
         with:
           context: .
           file: ./Dockerfile
-          platforms: linux/amd64
+          platforms: linux/x86_64
           push: true
           tags: ${{ steps.docker_meta.outputs.tags }}
           labels: ${{ steps.docker_meta.outputs.labels }}

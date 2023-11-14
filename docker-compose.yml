@@ -22,7 +22,7 @@ services:
     container_name: app
     depends_on:
       - mysqldb
-    build: ./
+    image: starpro123/bh-note-store:latest
     restart: on-failure
     env_file: ./.env
     ports:
