@@ -53,7 +53,7 @@ public class SecurityConfig {
             "/loggers",
             // other public endpoints of your API may be appended to this array
             "/api/admin/token",
-            "/api/admin/token/refresh",
+            "/api/admin/token/*",
             // Login Page
             ""
     };
@@ -64,7 +64,6 @@ public class SecurityConfig {
     }
 
     @Bean
-    //    private final CustomOau principalOauth2UserService;
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.httpBasic().disable()
                 .csrf().disable()

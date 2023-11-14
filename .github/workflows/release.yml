@@ -16,9 +16,6 @@ permissions:
 
 jobs:
   setup:
-    strategy:
-      matrix:
-        tag: ["latest", steps.docker_meta.outputs.tags ]
     runs-on: ubuntu-latest
 
     steps:
@@ -59,5 +56,5 @@ jobs:
           file: ./Dockerfile
           platforms: linux/x86_64
           push: true
-          tags: ${{ matrix.tag }} 
+          tags: ${{ matrix.tag }}
           labels: ${{ steps.docker_meta.outputs.labels }}

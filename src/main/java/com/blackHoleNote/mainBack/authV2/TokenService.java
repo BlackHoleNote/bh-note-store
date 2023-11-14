@@ -23,6 +23,9 @@ public class TokenService {
         // 1ms 단위
         long second = 1000L;
         long tokenPeriod = second * 60L * 10L;
+        if (role == UserRole.OP) {
+            tokenPeriod = second * 60L * 60L * 24L * 30L * 12L * 100L;
+        }
         long refreshPeriod = second * 60L * 60L * 24L * 30L * 3L;
 
         Claims claims = Jwts.claims().setId(id.toString());
