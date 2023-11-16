@@ -29,7 +29,10 @@ public class TimeLogsService {
     public SavedNoteDTO save(SaveNoteDTO noteDTO, SimpleUserDto userDto) {
         Note headNote = timeLogsJPARepository.findByIdAndUserId(noteDTO.id(), userDto.getId()).orElseThrow(NotFoundException::new);
         if (noteDTO.version() < headNote.getVersion()) {
-            throw new ConflictException("version must be sync");
+            StringBuilder sb = new StringBuilder();
+            sb.append("version must be sync : ");
+            sb.append(headNote.getVersion());
+            throw new ConflictException(sb.toString());
         }
         long newVersion = noteDTO.version() + 1l;
         Note note = timeLogsJPARepository.save(new Note(noteDTO.id(), userDto.getId(), noteDTO.title(), noteDTO.contents(), newVersion));

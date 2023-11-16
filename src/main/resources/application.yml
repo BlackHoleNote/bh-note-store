@@ -60,7 +60,7 @@ spring:
 logging:
   level:
     root:
-      TRACE
+      INFO
 ---
 spring:
   config:
